@@ -19,8 +19,13 @@ class respawn
     start_binary: (filename) ->
         pchild =  new child
         entry = db.spawn.get filename
+        options = []
+        for i in @program.options
+            options.push i unless i=='&'
+        options.push "#{@program.directory}/#{filename}"
+        options.push "&"
             
-        @program.child = pchild.start @program.binary, @program.binarypath, @program.options, (code, signal) =>
+        @program.child = pchild.start @program.binary, @program.binarypath, options, (code, signal) =>
             console.log ' code is ' + code + ' signal is ' + signal
             if signal == "SIGUSR1"
                 console.log 'User wants to not to start the program'
@@ -40,6 +45,7 @@ class respawn
           
     
     watch_directory: (directory) ->
+        @program.directory = directory
         #unless  @program.db
         #    @parse_directory(directory)
 
