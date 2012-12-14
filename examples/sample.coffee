@@ -1,9 +1,9 @@
-monitor = require './lib/monitor'
+monitor = require '../lib/monitor'
         
 file = "/etc/udhcpd.conf"
 options = []
 options.push "-fS"
-options.push file
+options.push "/etc/udhcpd.conf"
 options.push "&"
 
 udhcpd = new monitor
@@ -15,7 +15,8 @@ udhcpd.startMonitor (err) =>
         udhcpd.stop (result) ->
             console.log 'stopped check the errors'
             console.log err
+            process.exit(1)
 
-udhcpd.watch("/config/network/udhcpd")
+udhcpd.watch('/etc/udhcpd.conf')
 pid = udhcpd.pid()
 console.log 'udhcpd pid is ' + pid

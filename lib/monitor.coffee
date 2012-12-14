@@ -5,15 +5,16 @@ class child
 
     start: (binary, binarypath, options, callback) ->
         spawn = require('child_process').spawn
-        fs = require 'fs'
         cmd = "#{binarypath}/#{binary}"
         console.log 'about to execute command ' + cmd
         console.log options
-        log = fs.openSync("/tmp/log.log", 'a')
-        additionalOptions=
-            detached:true
-            stdio: ["ignore", log, log]
-        @startchild = spawn(cmd,options,additionalOptions)
+
+#        log = fs.openSync("/tmp/log.log", 'a')
+#        additionalOptions=
+#            detached:true
+#            stdio: ["ignore", log, log]
+#        @startchild = spawn(cmd,options,additionalOptions)
+        @startchild = spawn(cmd,options)
 
         @startchild.stderr.on 'data', (data) ->
             console.log 'recvd stderror ' + data
@@ -61,7 +62,7 @@ class monitor
         @watched.file = file
 
 
-    startMonitor:(callback) ->
+    startMonitor: (callback) ->
         binary  = new child
         console.log @watched.program
         program = @watched.program
@@ -85,7 +86,7 @@ class monitor
                         console.log error
         callback()
 
-    watch:(directory)  =>
+    watch: (directory)  =>
         fs.watch directory, (event, filename) =>
             console.log 'event is ' + event + ' below are the files '
             console.log filename,  @watched.file
@@ -114,5 +115,6 @@ class monitor
 
 
 
-module.exports = monitor
+module.exports.monitor = monitor
+module.exports.child = child
 
