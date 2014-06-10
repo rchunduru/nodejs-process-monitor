@@ -1,3 +1,7 @@
+This repo is deprecated. Please use the following repository
+https://github.com/rchunduru/node-ptrace
+
+
 nodejs-process-monitor
 ======================
 
